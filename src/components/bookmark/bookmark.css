@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap");
+
+:root {
+  --background: #e0e5ec;
+  --gray: #797d7f;
+
+}
+
+.bookmark {
+  width: 450px;
+  height: 95px;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: baseline;
+  border-radius: 12px;
+  box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+}
+
+img {
+  max-width: 73%;
+}
+
+.thumbnail {
+  width: 120px;
+  display: flex;
+  align-items: center;
+  margin: 4px 4px 4px 6px;
+  position: relative;
+}
+
+.thumbnail-img {
+  border-radius: 50%;
+  box-shadow: 2px 2px 7px rgb(192, 194, 197), -2px -2px 7px rgb(183, 188, 196),
+    -8px -8px 50px rgba(255, 255, 255, 0.8), 3px 3px 25px rgba(0, 0, 0, 0.6);
+}
+
+.description {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  margin: 0px 0px 0px 0px;
+  align-items: center;
+  justify-content: space-evenly;
+  position: relative;
+  right: 5%
+}
+
+.stream-name {
+  font-size: 1.6em;
+  font-weight: 500;
+  opacity: 0.5;
+  margin: 0px 0px 5px 10px;
+}
+
+.timestamp {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  font-size: 1.2em;
+  opacity: 0.5;
+  margin: 5px 0px 0px 10px;
+}
+
+.bookmark-controls {
+  display: flex;
+  align-items: center;
+  margin: 4px 0px 4px 0px;
+  /* position: relative;
+  left: 10% */
+}
+
+.actionButton {
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: -8px -8px 20px 0px #fff9, -6px -6px 6px 0px #fff9,
+    8px 8px 20px #0001, 5px 5px 6px 0px #0001;
+  color: var(--gray);
+  margin-right: 10px;
+}
+
+.actionButton:active {
+  box-shadow: inset -8px -8px 20px #fff9, inset -5px -5px 6px #fff9,
+    inset 8px 8px 20px #0003, inset 5px 5px 6px #0001;
+  /* background-color: #ef3a3a; */
+}
+
+.actionButton--medium {
+  min-height: 80px;
+  min-width: 80px;
+}
+
+.iconImg {
+  width: 28px;
+  height: 28px;
+  opacity: 0.5;
+  color: blue;
+}
