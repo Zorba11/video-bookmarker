@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Video Bookmarker",
+  "description": "A chrome simple extension to bookmark videos at specific time stamps. Works on WebClient, Youtube and .",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Video Bookmarker",
+    "default_icon": "icon.png"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
