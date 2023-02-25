@@ -1,9 +1,12 @@
 import React from 'react';
 import './bookmark.css';
-const Bookmark: React.FC<{
-  onplay: () => void;
-  onDelete: () => void;
-}> = ({ onplay, onDelete }) => {
+import { IBookmark } from './Ibookmarks';
+
+const Bookmark: React.FC<{ bookmark: IBookmark; onPlay; onDelete }> = ({
+  bookmark,
+  onPlay,
+  onDelete,
+}) => {
   return (
     <div className="bookmark">
       {/* <!-- item 1 - video thumbnail --> */}
@@ -13,13 +16,13 @@ const Bookmark: React.FC<{
 
       {/* <!-- video name & timestamp --> */}
       <div className="description">
-        <h2 className="stream-name">Stream Name</h2>
-        <h3 className="timestamp">Feb 13, 10:39 am</h3>
+        <h2 className="bookmarkName">{bookmark.bookmarkName}</h2>
+        <h3 className="timestamp">{bookmark.timeDesc}</h3>
       </div>
 
       <div className="bookmark-controls">
         <div
-          onClick={onplay}
+          onClick={onPlay}
           className="actionButton actionButton--medium"
           id="bookmarkPlay"
         >

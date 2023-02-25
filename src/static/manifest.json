@@ -9,6 +9,7 @@
     "48": "icon.png",
     "128": "icon.png"
   },
+  "permissions": ["storage", "tabs"],
   "host_permissions": [
     "https://*.youtube.com/*",
     "https://10.53.105.43/web/video/*"

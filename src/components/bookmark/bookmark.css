@@ -42,7 +42,7 @@ img {
 }
 
 .description {
-  width: 150px;
+  width: 200px;
   display: flex;
   flex-direction: column;
   margin: 0px 0px 0px 0px;
@@ -52,7 +52,7 @@ img {
   right: 5%
 }
 
-.stream-name {
+.bookmarkName {
   font-size: 1.6em;
   font-weight: 500;
   opacity: 0.5;
@@ -68,6 +68,7 @@ img {
   font-size: 1.2em;
   opacity: 0.5;
   margin: 5px 0px 0px 10px;
+
 }
 
 .bookmark-controls {
@@ -154,6 +155,6 @@ play {
   100% {
     width: 100%;
     box-shadow: 0 0 0 4px #02A4D3;
-    /* transform: scale(1); */
+    transform: scale(1);
   }
 }

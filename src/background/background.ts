@@ -7,24 +7,30 @@ chrome.tabs.onUpdated.addListener(
     changeInfo: chrome.tabs.TabChangeInfo,
     tab: chrome.tabs.Tab
   ) => {
-    if (tab.url && isWebClientVideo(tab) && tab.active) {
-      let videoId: string = tab.url.split('/').pop();
+    try {
+      if (tab.url && isWebClientVideo(tab) && tab.active) {
+        let videoId: string = tab.url.split('/').pop();
 
-      // checks if the video is in archive mode
-      if (videoId.includes('?')) {
-        videoId = videoId.split('?').shift();
+        // checks if the video is in archive mode
+        if (videoId.includes('?')) {
+          videoId = videoId.split('?').shift();
+        }
+
+        // send a message to the content script
+        chrome.tabs.query(
+          { active: true, currentWindow: true },
+          function (tabs) {
+            chrome.tabs.sendMessage(tabId, {
+              type: 'NEW',
+              videoId: videoId,
+            });
+          }
+        );
+      } else if (tab.url && isYoutubeVideo(tab)) {
+        console.log('Hello youtube');
       }
-
-      // send a message to the content script
-
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabId, {
-          type: 'NEW',
-          videoId: videoId,
-        });
-      });
-    } else if (tab.url && isYoutubeVideo(tab)) {
-      console.log('Hello youtube');
+    } catch (error) {
+      console.error(`error finding a valid video url: ${error}`);
     }
   }
 );
