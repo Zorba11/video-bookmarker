@@ -1,6 +1,9 @@
 import React from 'react';
 import './bookmark.css';
-const Bookmark: React.FC<{}> = () => {
+const Bookmark: React.FC<{
+  onplay: () => void;
+  onDelete: () => void;
+}> = ({ onplay, onDelete }) => {
   return (
     <div className="bookmark">
       {/* <!-- item 1 - video thumbnail --> */}
@@ -15,11 +18,19 @@ const Bookmark: React.FC<{}> = () => {
       </div>
 
       <div className="bookmark-controls">
-        <div className="actionButton actionButton--medium" id="forward">
-          <img src="play.png" className="iconImg" />
+        <div
+          onClick={onplay}
+          className="actionButton actionButton--medium"
+          id="bookmarkPlay"
+        >
+          <img src="play.png" className="iconImg" id="playImg" />
         </div>
-        <div className="actionButton actionButton--medium" id="forward">
-          <img src="delete.png" className="iconImg" />
+        <div
+          onClick={onDelete}
+          className="actionButton actionButton--medium"
+          id="bookmartTrash"
+        >
+          <img src="delete.png" className="iconImg delImg" />
         </div>
       </div>
     </div>

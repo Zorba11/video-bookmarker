@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 body {
-  width: 470px;
+  width: 500px;
     height: 600px;
     background-color: var(--background);
     margin: 0;

@@ -1,13 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap");
 
 :root {
-  --background: #e0e5ec;
-  --gray: #797d7f;
 
+  --background: #e0e5ec;
+  --white: #FFFFFF;
+    --greyLight-2: #c8d0e7;
+  --gray: #797d7f;
+  --inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
+      inset -.2rem -.2rem .5rem var(--white);
 }
 
 .bookmark {
-  width: 450px;
+  width: 480px;
   height: 95px;
   background-color: var(--background);
   display: flex;
@@ -53,6 +57,7 @@ img {
   font-weight: 500;
   opacity: 0.5;
   margin: 0px 0px 5px 10px;
+  z-index: 2;
 }
 
 .timestamp {
@@ -68,7 +73,7 @@ img {
 .bookmark-controls {
   display: flex;
   align-items: center;
-  margin: 4px 0px 4px 0px;
+  margin: 4px 0px 4px 15px;
   /* position: relative;
   left: 10% */
 }
@@ -79,6 +84,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 4px;
   box-shadow: -8px -8px 20px 0px #fff9, -6px -6px 6px 0px #fff9,
     8px 8px 20px #0001, 5px 5px 6px 0px #0001;
   color: var(--gray);
@@ -86,10 +92,9 @@ img {
 }
 
 .actionButton:active {
-  box-shadow: inset -8px -8px 20px #fff9, inset -5px -5px 6px #fff9,
-    inset 8px 8px 20px #0003, inset 5px 5px 6px #0001;
-  /* background-color: #ef3a3a; */
+  box-shadow: var(--inner-shadow);
 }
+
 
 .actionButton--medium {
   min-height: 80px;
@@ -101,4 +106,54 @@ img {
   height: 28px;
   opacity: 0.5;
   color: blue;
+}
+/* Animation */
+
+.actionButton,
+.actionButton--medium,
+play {
+  position: relative;
+  /* Make sure the :before pseudo-element is positioned relative to this element */
+}
+
+.actionButton:before,
+.actionButton--medium:before,
+play {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  /* box-shadow: 0 0 0 0 rgba(255, 195, 0, 0.7); */
+  /* animation: pulsate 2s ease-out; */
+  z-index: -1;
+  /* Place the pseudo-element behind the element */
+}
+
+.playAnimation {
+  animation: pulsate 1s ease-in;
+  /* box-shadow: 0 0 0 5px #02A4D3; */
+
+}
+
+@keyframes pulsate {
+  0% {
+    width: 25%;
+    box-shadow: 0 0 0 0 #02A4D3;
+    transform: scale(0.5);
+  }
+
+  50% {
+    width: 55%;
+    box-shadow: 0 0 0 2px #02A4D3;
+    transform: scale(2);
+  }
+
+  100% {
+    width: 100%;
+    box-shadow: 0 0 0 4px #02A4D3;
+    /* transform: scale(1); */
+  }
 }

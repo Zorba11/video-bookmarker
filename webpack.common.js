@@ -51,9 +51,14 @@ module.exports = {
   },
   optimization: {
     // allows chunks to share modules
+    // allows chunks to share modules
     splitChunks: {
-      chunks: 'all',
+      chunks(chunk) {
+        // so that contentScript won't go into the dist folder
+        return chunk.name !== 'contentScript';
+      },
     },
+    runtimeChunk: false,
   },
 };
 
