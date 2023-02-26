@@ -6,4 +6,5 @@ export const PLAYER_ID = '0.0.1.1';
 
 // Youtube
 export const PLAYER_LEFT_CONTROLS_CLASSNAME = 'ytp-left-controls';
-export const PLAYER_CLASSNAME = 'video-stream';
+export const PLAYER_RIGHT_CONTROLS_CLASSNAME = 'ytp-right-controls';
+export const YT_PLAYER_CLASSNAME = 'video-stream';

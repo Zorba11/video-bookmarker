@@ -1,4 +1,17 @@
+/**
+ * Contains helper functions for DOM manipulation common
+ * to YouTube and WebClient
+ * */
+
+import { IBookmark } from '../components/bookmark/Ibookmarks';
 import { fetchBookmarks } from './api';
+
+/**
+ * Checks if the bookmark button is already in the DOM
+ */
+export function bookmarkButtonExist(): boolean {
+  return document.getElementsByClassName('bookmark-button')[0] ? true : false;
+}
 
 /**
  * finds the first element with the given class name in the DOM
@@ -55,4 +68,20 @@ export async function checkIfValidPage(pages: string[]): Promise<boolean> {
     if (activeTab.url.includes(page)) return true;
   }
   return false;
+}
+
+/**
+ * Just a helper function to auto add a default
+ * bookmark name based on
+ * the number of bookmarks
+ * */
+export function autoAddBookMarkName(
+  currentVideoBookmarks: IBookmark[],
+  newBookMark: IBookmark
+) {
+  currentVideoBookmarks.length > 0
+    ? (newBookMark.bookmarkName = `bookmark ${
+        currentVideoBookmarks.length + 1
+      }`)
+    : (newBookMark.bookmarkName = 'bookmark');
 }

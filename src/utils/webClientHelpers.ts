@@ -6,7 +6,11 @@ import {
   PLAYER_OVERLAY_TIME,
 } from '../constants/componentNames';
 import { fetchBookmarks, requestCaptureThumbnail, storeBookmark } from './api';
-import { findElementByClassName } from './domHelpers';
+import {
+  autoAddBookMarkName,
+  bookmarkButtonExist,
+  findElementByClassName,
+} from './domHelpers';
 
 export function setBookmarkButtonStyles(
   bookmarkButton: HTMLImageElement
@@ -86,22 +90,6 @@ function captureThumbnail(bookmark: IBookmark): void {
   }
 }
 
-/**
- * Just a helper function to auto add bookmark name based on
- * the number of bookmarks
- * */
-
-function autoAddBookMarkName(
-  currentVideoBookmarks: IBookmark[],
-  newBookMark: IBookmark
-) {
-  currentVideoBookmarks.length > 0
-    ? (newBookMark.bookmarkName = `bookmark ${
-        currentVideoBookmarks.length + 1
-      }`)
-    : (newBookMark.bookmarkName = 'bookmark');
-}
-
 export function getCurrentTime(): number {
   // we are getting the current timestamp from the overlay date time values
   const playerOverlayTimeEl = findElementByClassName(PLAYER_OVERLAY_TIME);
@@ -111,10 +99,6 @@ export function getCurrentTime(): number {
     playerOverlayTimeEl.textContent + ' ' + playerOverlayDateEl.textContent;
 
   return dateTime ? new Date(dateTime).getTime() : 0;
-}
-
-function bookmarkButtonExist(): boolean {
-  return document.getElementsByClassName('bookmark-button')[0] ? true : false;
 }
 
 export function createBookmarkButton(videoId: string): void {
@@ -128,8 +112,6 @@ export function createBookmarkButton(videoId: string): void {
   );
 
   setBookmarkButtonStyles(bookmarkButton);
-
-  if (!playerControlsBar) return;
 
   playerControlsBar.insertBefore(bookmarkButton, playerControlsBar.children[6]);
 
