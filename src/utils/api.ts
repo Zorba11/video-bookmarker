@@ -4,7 +4,7 @@ export function fetchBookmarks(currentVideoId: string): Promise<any> {
   try {
     if (currentVideoId) {
       return new Promise((resolve, reject) => {
-        chrome.storage.sync.get([currentVideoId], (result) => {
+        chrome.storage.local.get([currentVideoId], (result) => {
           resolve(
             result[currentVideoId] ? JSON.parse(result[currentVideoId]) : []
           );
@@ -23,8 +23,7 @@ export async function storeBookmark(
   currentVideoBookmarks: IBookmark[]
 ): Promise<void> {
   try {
-    chrome.storage.sync.clear();
-    chrome.storage.sync.set({
+    chrome.storage.local.set({
       // save and sort the bookmarks
       [newBookmark.videoId]: JSON.stringify(
         [...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time)
@@ -43,7 +42,60 @@ export async function updateBookmarks(
    * TODO: Should make this more efficient by only updating the specific bookmark
    * */
 
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     [currentVideoId]: JSON.stringify(updatedBookmarks),
   });
+}
+
+/***
+ * Sends a message to the background script to capture a screenshot of the tab
+ */
+export async function requestCaptureThumbnail(
+  videoId: string,
+  currentTime: number
+): Promise<void> {
+  chrome.runtime.sendMessage({
+    type: 'CaptureThumbnail',
+    videoId,
+    currentTime,
+  });
+}
+
+/**
+ * This function is called from the background script
+ * to capture a thumbnail of the current tab
+ * ---- unused ----
+ */
+
+export function captureTabThumbnail(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.captureVisibleTab(
+      null,
+      { format: 'png' },
+      (dataUrl: string) => {
+        resolve(dataUrl);
+      }
+    );
+  });
+}
+
+/***
+ * This function is called from the background script
+ * capture and store the thumbnail screenshot
+ * ---- unused ----
+ */
+
+export async function captureAndStoreTabThumbnail(
+  videoId: string,
+  time: number
+) {
+  const thumbnail = await captureTabThumbnail();
+  const currentVideoBookmarks = await fetchBookmarks(videoId);
+  const updatedBookmarks = currentVideoBookmarks.map((bookmark) => {
+    if (bookmark.time === time) {
+      bookmark.thumbnail = thumbnail;
+    }
+    return bookmark;
+  });
+  updateBookmarks(videoId, updatedBookmarks);
 }

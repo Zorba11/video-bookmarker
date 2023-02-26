@@ -14,8 +14,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
        * */
       setTimeout(() => createBookmarkButton(message.videoId), 2000);
       break;
-    case 'DeleteBookmark':
-      break;
     default:
       break;
   }

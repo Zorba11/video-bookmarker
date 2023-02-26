@@ -103,7 +103,7 @@ img {
   left: 10% */
 }
 
-.actionButton {
+.action-button {
   cursor: pointer;
   border-radius: 50%;
   display: flex;
@@ -116,17 +116,17 @@ img {
   margin-right: 10px;
 }
 
-.actionButton:active {
+.action-button:active {
   box-shadow: var(--inner-shadow);
 }
 
 
-.actionButton--medium {
+.action-button--medium {
   min-height: 80px;
   min-width: 80px;
 }
 
-.iconImg {
+.icon-img {
   width: 28px;
   height: 28px;
   opacity: 0.5;
@@ -135,17 +135,18 @@ img {
 .hide {
   display: none;
 }
+
 /* Animation */
 
-.actionButton,
-.actionButton--medium,
+.action-button,
+.action-button--medium,
 play {
   position: relative;
   /* Make sure the :before pseudo-element is positioned relative to this element */
 }
 
-.actionButton:before,
-.actionButton--medium:before,
+.action-button:before,
+.action-button--medium:before,
 play {
   content: "";
   position: absolute;

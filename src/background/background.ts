@@ -1,6 +1,13 @@
 import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
 import { YOUTUBE_VIDEO_URL } from '../constants/urls';
+import {
+  captureAndStoreTabThumbnail,
+  captureTabThumbnail as captureThumbnailUrl,
+} from '../utils/api';
 
+/***
+ * Listens for a new valid Video page and sends a message to the content script
+ */
 chrome.tabs.onUpdated.addListener(
   (
     tabId: number,
@@ -42,3 +49,17 @@ function isWebClientVideo(tab: chrome.tabs.Tab) {
 function isYoutubeVideo(tab: chrome.tabs.Tab) {
   return tab.url.includes(YOUTUBE_VIDEO_URL);
 }
+
+/**
+ * Listens for a message from the content script to capture a thumbnail
+ * ----unused so far------
+ */
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (message.type) {
+    case 'CaptureThumbnail':
+      captureAndStoreTabThumbnail(message.videoId, message.currentTime);
+      break;
+    default:
+      break;
+  }
+});
