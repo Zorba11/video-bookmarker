@@ -1,17 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap");
 
 :root {
-
   --background: #e0e5ec;
   --white: #FFFFFF;
-    --greyLight-2: #c8d0e7;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
   --gray: #797d7f;
+  --greyDark: #9baacf;
+  
+    --greyDarker: #5e7ac2;
+  
+    --shadow: .3rem .3rem .6rem var(--greyLight-2),
+      -.2rem -.2rem .5rem var(--white);
   --inner-shadow: inset .2rem .2rem .5rem var(--greyLight-2),
       inset -.2rem -.2rem .5rem var(--white);
 }
 
 .bookmark {
-  width: 480px;
+  width: 500px;
   height: 95px;
   background-color: var(--background);
   display: flex;
@@ -24,11 +30,11 @@
 }
 
 img {
-  max-width: 73%;
+  max-width: 140%;
 }
 
 .thumbnail {
-  width: 120px;
+  width: 200px !important;
   display: flex;
   align-items: center;
   margin: 4px 4px 4px 6px;
@@ -36,28 +42,46 @@ img {
 }
 
 .thumbnail-img {
+  /* width: 100%; */
   border-radius: 50%;
   box-shadow: 2px 2px 7px rgb(192, 194, 197), -2px -2px 7px rgb(183, 188, 196),
     -8px -8px 50px rgba(255, 255, 255, 0.8), 3px 3px 25px rgba(0, 0, 0, 0.6);
 }
 
 .description {
-  width: 200px;
   display: flex;
   flex-direction: column;
-  margin: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 12px;
   align-items: center;
   justify-content: space-evenly;
   position: relative;
-  right: 5%
+  left: 2%;
 }
 
 .bookmarkName {
+  width: 210px;
+    height: 50px;
   font-size: 1.6em;
   font-weight: 500;
   opacity: 0.5;
-  margin: 0px 0px 5px 10px;
+  margin: 0px 0px 0px 10px;
   z-index: 2;
+  border: none;
+    border-radius: 1rem;
+    padding-left: 1.4rem;
+    box-shadow: var(--inner-shadow);
+    background: none;
+    color: var(--greyDarker);
+  
+  }
+  
+  .bookmarkName:focus {
+    outline: none;
+    box-shadow: var(--shadow);
+  }
+  
+  .bookmarkName::placeholder {
+    color: var(--gray);
 }
 
 .timestamp {
@@ -74,7 +98,7 @@ img {
 .bookmark-controls {
   display: flex;
   align-items: center;
-  margin: 4px 0px 4px 15px;
+  margin: 4px 0px 4px 20px;
   /* position: relative;
   left: 10% */
 }
@@ -107,6 +131,9 @@ img {
   height: 28px;
   opacity: 0.5;
   color: blue;
+}
+.hide {
+  display: none;
 }
 /* Animation */
 

@@ -82,6 +82,30 @@ const App: React.FC<{}> = () => {
       });
   };
 
+  const onBookmarkNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      /***
+       * using the previous bookmark name to
+       * find the specific bookmark ? should find a better way ?!
+       *
+       */
+
+      const previousBookmarkName = e.currentTarget.placeholder;
+
+      const bookmark = bookmarks.find(
+        (bookmark) => bookmark.bookmarkName === previousBookmarkName
+      );
+
+      bookmark.bookmarkName = e.currentTarget.value;
+
+      updateBookmarks(videoId, bookmarks).then(() => {
+        setBookmarks([...bookmarks]);
+      });
+
+      e.currentTarget.blur();
+    }
+  };
+
   return (
     <div className="container">
       <div className="title">
@@ -90,7 +114,13 @@ const App: React.FC<{}> = () => {
           : 'Not a Valid Video Page'}
       </div>
       <div className="bookmarksContainer">
-        {renderBookmarks(isValidPage, bookmarks, onPlay, onDelete)}
+        {renderBookmarks(
+          isValidPage,
+          bookmarks,
+          onPlay,
+          onDelete,
+          onBookmarkNameChange
+        )}
       </div>
     </div>
   );
@@ -105,7 +135,8 @@ function renderBookmarks(
   isValidPage: boolean,
   bookmarks: IBookmark[],
   onPlay: () => void,
-  onDelete: (index) => void
+  onDelete: (index) => void,
+  onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void
 ): React.ReactNode {
   if (bookmarks.length === 0 || !isValidPage)
     return <div className="title">No bookmarks yet</div>;
@@ -116,6 +147,7 @@ function renderBookmarks(
       bookmark={bookmark}
       onPlay={onPlay}
       onDelete={() => onDelete(index)}
+      onBookmarkNameChange={onBookmarkNameChange}
     />
   ));
 }

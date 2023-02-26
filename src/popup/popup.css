@@ -10,7 +10,7 @@
   box-sizing: border-box;
 }
 body {
-  width: 500px;
+  width: 520px;
     height: 600px;
     background-color: var(--background);
     margin: 0;
@@ -36,4 +36,5 @@ body {
   .bookmarksContainer {
     display: flex;
     flex-direction: column;
+      gap: 7px;
 }

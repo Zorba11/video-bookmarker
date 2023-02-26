@@ -6,7 +6,8 @@ const Bookmark: React.FC<{
   bookmark: IBookmark;
   onPlay: () => void;
   onDelete: () => void;
-}> = ({ bookmark, onPlay, onDelete }) => {
+  onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}> = ({ bookmark, onPlay, onDelete, onBookmarkNameChange }) => {
   return (
     <div className="bookmark" id={bookmark.time.toString()}>
       {/* <!-- item 1 - video thumbnail --> */}
@@ -16,8 +17,15 @@ const Bookmark: React.FC<{
 
       {/* <!-- video name & timestamp --> */}
       <div className="description">
-        <h2 className="bookmarkName">{bookmark.bookmarkName}</h2>
-        <h3 className="timestamp">{bookmark.timeDesc}</h3>
+        <input
+          className="bookmarkName"
+          placeholder={bookmark.bookmarkName}
+          onKeyDown={onBookmarkNameChange}
+        ></input>
+        {/* <h3 className="timestamp">{bookmark.timeDesc.split(' ').join(', ')}</h3> */}
+        <h3 className="timestamp">
+          {new Date(bookmark.timeDesc).toLocaleString()}
+        </h3>
       </div>
 
       <div className="bookmark-controls">
