@@ -3,44 +3,94 @@ import { createRoot } from 'react-dom/client';
 import './popup.css';
 import Bookmark from '../components/bookmark';
 import { IBookmark } from '../components/bookmark/Ibookmarks';
-import { fetchBookmarks } from '../utils/api';
+import { fetchBookmarks, updateBookmarks } from '../utils/api';
+import {
+  getVideoId,
+  checkIfValidPage,
+  getCurrentTab,
+} from '../utils/domHelpers';
+import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
+import { YOUTUBE_VIDEO_URL } from '../constants/urls';
+
+const validVideoPageUrls: string[] = [WEB_CLIENT_STREAM_URL, YOUTUBE_VIDEO_URL];
 
 const App: React.FC<{}> = () => {
-  const onPlay = () => {
-    // const playButton = document.getElementById('bookmarkPlay');
-    // playButton.classList.add('playAnimation');
-    // const playImg = document.getElementById('playImg') as HTMLImageElement;
-    // playImg.src = 'playActive.png';
-    // playImg.classList.add('playAnimation');
-  };
-
-  const onDelete = () => {
-    // const playButton = document.getElementById('bookmarkPlay');
-    // playButton.classList.remove('playAnimation');
-  };
-
-  function getBookmarProps(): IBookmark {
-    return {
-      thumbnail: 'thumbnail.png',
-      bookmarkName: 'Bookmark Name',
-      timeDesc: 'Feb 13, 10:39 am',
-      time: 123,
-    };
-  }
+  const [isValidPage, setIsValidPage] = React.useState<boolean>(false);
+  const [bookmarks, setBookmarks] = React.useState<IBookmark[]>([]);
+  const [activeTab, setActiveTab] = React.useState<chrome.tabs.Tab>(undefined);
+  const [videoId, setVideoId] = React.useState<string>(undefined);
 
   useEffect(() => {
-    // const bookmarks = await fetchBookmarks();
+    /**
+     * Find and set the active tab
+     */
+    getCurrentTab()
+      .then((tab) => setActiveTab(tab))
+      .catch((err) => {
+        console.error(`Error getting current tab: ${err}`);
+      });
+
+    /**
+     * Check if the page is a valid page i.e WebClient or YouTube
+     * */
+    checkIfValidPage(validVideoPageUrls)
+      .then((isValid) => setIsValidPage(isValid))
+      .catch((err) => {
+        console.error(`Error checking if page is valid: ${err}`);
+      });
+
+    /**
+     * Find the Video ID of the current video and fetch the bookmarks for that video
+     * */
+    getVideoId()
+      .then((videoId) => {
+        fetchBookmarks(videoId)
+          .then((bookmarks) => {
+            setBookmarks(bookmarks);
+            setVideoId(bookmarks[0]?.videoId);
+          })
+          .catch((err) => {
+            console.error(`Error fetching bookmarks: ${err}`);
+          });
+      })
+      .catch((err) => {
+        console.error(`Error getting video ID: ${err}`);
+      });
+
+    return () => {
+      /**
+       * cleanups - is this needed ?
+       * do you trust javascript garbage collection, I don't :( (I'm looking at you, chrome)
+       * */
+      // setIsValidPage(undefined);
+      // setBookmarks(undefined);
+    };
   }, []);
+
+  const onPlay = () => {};
+
+  const onDelete = async (index: number) => {
+    bookmarks.splice(index, 1);
+    const updatedBookmarks = [...bookmarks];
+
+    updateBookmarks(videoId, updatedBookmarks)
+      .then(() => {
+        setBookmarks([...bookmarks]);
+      })
+      .catch((err) => {
+        console.error(`Error deleting bookmark: ${err}`);
+      });
+  };
 
   return (
     <div className="container">
-      <div className="title">Your bookmarks for this Stream</div>
+      <div className="title">
+        {isValidPage
+          ? 'Your Bookmarks For This Stream'
+          : 'Not a Valid Video Page'}
+      </div>
       <div className="bookmarksContainer">
-        <Bookmark
-          bookmark={getBookmarProps()}
-          onPlay={onPlay}
-          onDelete={onDelete}
-        />
+        {renderBookmarks(isValidPage, bookmarks, onPlay, onDelete)}
       </div>
     </div>
   );
@@ -50,3 +100,23 @@ const container = document.createElement('div');
 document.body.appendChild(container);
 const root = createRoot(container);
 root.render(<App />);
+
+function renderBookmarks(
+  isValidPage: boolean,
+  bookmarks: IBookmark[],
+  onPlay: () => void,
+  onDelete: (index) => void
+): React.ReactNode {
+  if (bookmarks.length === 0 || !isValidPage)
+    return <div className="title">No bookmarks yet</div>;
+
+  return bookmarks.map((bookmark, index) => (
+    <Bookmark
+      key={index}
+      bookmark={bookmark}
+      onPlay={onPlay}
+      onDelete={() => onDelete(index)}
+    />
+  ));
+}
+

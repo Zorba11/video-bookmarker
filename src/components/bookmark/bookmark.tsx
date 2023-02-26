@@ -2,13 +2,13 @@ import React from 'react';
 import './bookmark.css';
 import { IBookmark } from './Ibookmarks';
 
-const Bookmark: React.FC<{ bookmark: IBookmark; onPlay; onDelete }> = ({
-  bookmark,
-  onPlay,
-  onDelete,
-}) => {
+const Bookmark: React.FC<{
+  bookmark: IBookmark;
+  onPlay: () => void;
+  onDelete: () => void;
+}> = ({ bookmark, onPlay, onDelete }) => {
   return (
-    <div className="bookmark">
+    <div className="bookmark" id={bookmark.time.toString()}>
       {/* <!-- item 1 - video thumbnail --> */}
       <div className="thumbnail">
         <img src="thumbnail.png" className="thumbnail-img" />

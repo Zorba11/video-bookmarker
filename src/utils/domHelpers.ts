@@ -1,3 +1,8 @@
+import { fetchBookmarks } from './api';
+
+/**
+ * finds the first element with the given class name in the DOM
+ *  */
 export function findElementByClassName(className: string): HTMLElement | null {
   let elements: HTMLCollectionOf<Element> = document.getElementsByTagName('*');
 
@@ -12,4 +17,42 @@ export function findElementByClassName(className: string): HTMLElement | null {
       }
     }
   }
+}
+
+/**
+ * get current active tab
+ * */
+export async function getCurrentTab(): Promise<chrome.tabs.Tab> {
+  let queryOptions = { active: true, currentWindow: true };
+  // `tab` will either be a `tabs.Tab` instance or `undefined`.
+  let [tab] = await chrome.tabs.query(queryOptions);
+  return tab;
+}
+
+/**
+ * Gets the Video ID based on the current active tab
+ * */
+export async function getVideoId(): Promise<string> {
+  const activeTab: chrome.tabs.Tab = await getCurrentTab();
+
+  if (!activeTab) return;
+
+  let videoId: string = activeTab.url.split('/').pop();
+
+  if (videoId.includes('?')) {
+    videoId = videoId.split('?').shift();
+  }
+
+  return videoId;
+}
+
+export async function checkIfValidPage(pages: string[]): Promise<boolean> {
+  const activeTab = await getCurrentTab();
+
+  if (!activeTab) return false;
+
+  for (const page of pages) {
+    if (activeTab.url.includes(page)) return true;
+  }
+  return false;
 }

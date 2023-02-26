@@ -33,7 +33,9 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
     };
 
     // always make sure to get the latest bookmarks
-    const currentVideoBookmarks = await fetchBookmarks(videoId);
+    const currentVideoBookmarks: IBookmark[] = await fetchBookmarks(videoId);
+
+    autoAddBookMarkName(currentVideoBookmarks, newBookMark);
 
     console.log(currentVideoBookmarks);
 
@@ -41,6 +43,22 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
   } catch (error) {
     console.error(`error adding new bookmark: ${error}`);
   }
+}
+
+/**
+ * Just a helper function to auto add bookmark name based on
+ * the number of bookmarks
+ * */
+
+function autoAddBookMarkName(
+  currentVideoBookmarks: IBookmark[],
+  newBookMark: IBookmark
+) {
+  currentVideoBookmarks.length > 0
+    ? (newBookMark.bookmarkName = `bookmark ${
+        currentVideoBookmarks.length + 1
+      }`)
+    : (newBookMark.bookmarkName = 'bookmark');
 }
 
 export function getCurrentTime(): number {
