@@ -8,6 +8,8 @@ import {
   getVideoId,
   checkIfValidPage,
   getCurrentTab,
+  isYoutubeVideoId,
+  isWebClientVideo,
 } from '../utils/domHelpers';
 import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
 import { YOUTUBE_VIDEO_URL } from '../constants/urls';
@@ -19,13 +21,22 @@ const App: React.FC<{}> = () => {
   const [bookmarks, setBookmarks] = React.useState<IBookmark[]>([]);
   const [activeTab, setActiveTab] = React.useState<chrome.tabs.Tab>(undefined);
   const [videoId, setVideoId] = React.useState<string>(undefined);
+  const [isYoutube, setIsYoutube] = React.useState<boolean>(false);
+  const [isWebClient, setIsWebClient] = React.useState<boolean>(false);
 
   useEffect(() => {
     /**
      * Find and set the active tab
      */
     getCurrentTab()
-      .then((tab) => setActiveTab(tab))
+      .then((tab) => {
+        setActiveTab(tab);
+        isYoutubeVideoId(activeTab)
+          ? setIsYoutube(true)
+          : isWebClientVideo(activeTab)
+          ? setIsWebClient(true)
+          : console.log('Not a valid page');
+      })
       .catch((err) => {
         console.error(`Error getting current tab: ${err}`);
       });
@@ -46,6 +57,7 @@ const App: React.FC<{}> = () => {
       .then((videoId) => {
         fetchBookmarks(videoId)
           .then((bookmarks) => {
+            console.log(bookmarks);
             setBookmarks(bookmarks);
             setVideoId(bookmarks[0]?.videoId);
           })
@@ -119,7 +131,9 @@ const App: React.FC<{}> = () => {
           bookmarks,
           onPlay,
           onDelete,
-          onBookmarkNameChange
+          onBookmarkNameChange,
+          isYoutube,
+          isWebClient
         )}
       </div>
     </div>
@@ -136,7 +150,9 @@ function renderBookmarks(
   bookmarks: IBookmark[],
   onPlay: () => void,
   onDelete: (index) => void,
-  onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void,
+  isYoutube: boolean,
+  isWebClient: boolean
 ): React.ReactNode {
   if (bookmarks.length === 0 || !isValidPage)
     return <div className="title">No bookmarks yet</div>;
@@ -148,6 +164,8 @@ function renderBookmarks(
       onPlay={onPlay}
       onDelete={() => onDelete(index)}
       onBookmarkNameChange={onBookmarkNameChange}
+      isYoutube={isYoutube}
+      isWebClient={isWebClient}
     />
   ));
 }

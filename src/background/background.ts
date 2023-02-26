@@ -4,6 +4,12 @@ import {
   captureAndStoreTabThumbnail,
   captureTabThumbnail as captureThumbnailUrl,
 } from '../utils/api';
+import {
+  getWebClientVideoId,
+  getYoutubeVideoId,
+  isWebClientVideo,
+  isYoutubeVideoId,
+} from '../utils/domHelpers';
 
 /***
  * Listens for a new valid Video page and sends a message to the content script
@@ -18,10 +24,7 @@ chrome.tabs.onUpdated.addListener(
       let videoId: string = tab?.url.split('/').pop();
 
       if (videoId && isWebClientVideo(tab) && tab.active) {
-        // checks if the video is in archive mode
-        if (videoId.includes('?')) {
-          videoId = videoId.split('?').shift();
-        }
+        videoId = getWebClientVideoId(tab);
 
         // send a message to the content script
         chrome.tabs.query(
@@ -33,7 +36,8 @@ chrome.tabs.onUpdated.addListener(
             });
           }
         );
-      } else if (videoId && isYoutubeVideo(tab)) {
+      } else if (videoId && isYoutubeVideoId(tab)) {
+        videoId = getYoutubeVideoId(tab);
         // send a message to the content script
         chrome.tabs.query(
           { active: true, currentWindow: true },
@@ -50,14 +54,6 @@ chrome.tabs.onUpdated.addListener(
     }
   }
 );
-
-function isWebClientVideo(tab: chrome.tabs.Tab) {
-  return tab.url.includes(WEB_CLIENT_STREAM_URL);
-}
-
-function isYoutubeVideo(tab: chrome.tabs.Tab) {
-  return tab.url.includes(YOUTUBE_VIDEO_URL);
-}
 
 /**
  * Listens for a message from the content script to capture a thumbnail

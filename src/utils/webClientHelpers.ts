@@ -1,7 +1,7 @@
 import { IBookmark } from '../components/bookmark/Ibookmarks';
 import {
   PLAYER_CONTROLS_CLASSNAME,
-  PLAYER_ID,
+  WEB_CLIENT_PLAYER_ID,
   PLAYER_OVERLAY_DATE,
   PLAYER_OVERLAY_TIME,
 } from '../constants/componentNames';
@@ -9,6 +9,7 @@ import { fetchBookmarks, requestCaptureThumbnail, storeBookmark } from './api';
 import {
   autoAddBookMarkName,
   bookmarkButtonExist,
+  captureThumbnail,
   findElementByClassName,
 } from './domHelpers';
 
@@ -42,51 +43,13 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
 
     autoAddBookMarkName(currentVideoBookmarks, newBookMark);
 
-    captureThumbnail(newBookMark);
+    captureThumbnail(newBookMark, WEB_CLIENT_PLAYER_ID, true, null);
 
     storeBookmark(newBookMark, currentVideoBookmarks);
 
     console.log(currentVideoBookmarks);
   } catch (error) {
     console.error(`error adding new bookmark: ${error}`);
-  }
-}
-
-/**
- * Draws the video element to a canvas and then converts
- * the canvas to a dataURL
- * then store it in the bookmark
- * */
-function captureThumbnail(bookmark: IBookmark): void {
-  try {
-    const videoEl = document.getElementById(PLAYER_ID) as
-      | HTMLVideoElement
-      | HTMLCanvasElement;
-
-    if (!videoEl) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = 100;
-    canvas.height = 100;
-    canvas
-      .getContext('2d')
-      .drawImage(
-        videoEl,
-        0,
-        0,
-        videoEl.clientWidth,
-        videoEl.clientHeight,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-    const dataURL = canvas.toDataURL('image/png');
-
-    bookmark.thumbnail = dataURL;
-  } catch (error) {
-    console.error(`error capturing thumbnail: ${error}`);
   }
 }
 

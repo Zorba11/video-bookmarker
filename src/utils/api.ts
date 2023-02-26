@@ -5,6 +5,7 @@ export function fetchBookmarks(currentVideoId: string): Promise<any> {
     if (currentVideoId) {
       return new Promise((resolve, reject) => {
         chrome.storage.local.get([currentVideoId], (result) => {
+          console.log('result: ', result);
           resolve(
             result[currentVideoId] ? JSON.parse(result[currentVideoId]) : []
           );

@@ -1,13 +1,23 @@
 import React from 'react';
 import './bookmark.css';
 import { IBookmark } from './Ibookmarks';
+import { formatVideoTime } from '../../utils/domHelpers';
 
 const Bookmark: React.FC<{
   bookmark: IBookmark;
   onPlay: () => void;
   onDelete: () => void;
   onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-}> = ({ bookmark, onPlay, onDelete, onBookmarkNameChange }) => {
+  isYoutube: boolean;
+  isWebClient: boolean;
+}> = ({
+  bookmark,
+  onPlay,
+  onDelete,
+  onBookmarkNameChange,
+  isYoutube,
+  isWebClient,
+}) => {
   return (
     <div className="bookmark">
       {/* <!-- item 1 - video thumbnail --> */}
@@ -24,7 +34,11 @@ const Bookmark: React.FC<{
         ></input>
         {/* <h3 className="timestamp">{bookmark.timeDesc.split(' ').join(', ')}</h3> */}
         <h3 className="timestamp">
-          {new Date(bookmark.timeDesc).toLocaleString()}
+          {isWebClient
+            ? new Date(bookmark.timeDesc).toLocaleString()
+            : isYoutube
+            ? 'time: ' + formatVideoTime(bookmark.time)
+            : 'time: '}
         </h3>
       </div>
 

@@ -4,10 +4,16 @@ import {
   PLAYER_RIGHT_CONTROLS_CLASSNAME,
   YT_PLAYER_CLASSNAME,
 } from '../constants/componentNames';
-import { fetchBookmarks, storeBookmark } from './api';
+import {
+  captureAndStoreTabThumbnail,
+  captureTabThumbnail,
+  fetchBookmarks,
+  storeBookmark,
+} from './api';
 import {
   autoAddBookMarkName,
   bookmarkButtonExist,
+  captureThumbnail,
   findElementByClassName,
 } from './domHelpers';
 
@@ -64,6 +70,8 @@ async function addNewBookMarkHandler(videoId: string): Promise<void> {
 
   // adding a default name to the bookmark
   autoAddBookMarkName(currentVideoBookmarks, newBookMark);
+
+  captureThumbnail(newBookMark, YT_PLAYER_CLASSNAME, null, true);
 
   storeBookmark(newBookMark, currentVideoBookmarks);
   console.log(currentVideoBookmarks);
