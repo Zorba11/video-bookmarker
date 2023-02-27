@@ -76,7 +76,9 @@ async function addNewBookMarkHandler(videoId: string): Promise<void> {
   };
 
   // always make sure to get the latest bookmarks
-  const currentVideoBookmarks: IBookmark[] = await fetchBookmarks(videoId);
+  let currentVideoBookmarks: IBookmark[] = await fetchBookmarks(videoId);
+
+  if (!currentVideoBookmarks) currentVideoBookmarks = [];
 
   // adding a default name to the bookmark
   autoAddBookMarkName(currentVideoBookmarks, newBookMark);

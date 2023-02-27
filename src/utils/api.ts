@@ -19,10 +19,8 @@ export function fetchBookmarks(currentVideoId: string): Promise<any> {
     }
   } catch (error) {
     console.error(`Error fetching bookmarks: ${error}`);
-    return Promise.reject(error);
   }
 }
-
 
 export async function storeBookmark(
   newBookmark: IBookmark,
@@ -115,6 +113,13 @@ export function requestBookmarkPlay(
   if (isYoutube) {
     chrome.tabs.sendMessage(activeTab.id, {
       type: 'PlayYTBookmark',
+      value: timestamp,
+    });
+  }
+
+  if (isWebClient) {
+    chrome.tabs.sendMessage(activeTab.id, {
+      type: 'PlayWebClientBookmark',
       value: timestamp,
     });
   }

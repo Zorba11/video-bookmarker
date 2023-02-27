@@ -155,19 +155,21 @@ export async function captureThumbnail(
     if (!videoEl) return;
 
     const canvas = document.createElement('canvas');
-    canvas.width = 500;
-    canvas.height = 500;
-    canvas.getContext('2d').drawImage(
-      videoEl,
-      0,
-      0,
-      videoEl.clientWidth,
-      videoEl.clientHeight
-      // 0,
-      // 0,
-      // canvas.width,
-      // canvas.height
-    );
+    canvas.width = 1200;
+    canvas.height = 1200;
+    canvas
+      .getContext('2d')
+      .drawImage(
+        videoEl,
+        0,
+        0,
+        videoEl.clientWidth,
+        videoEl.clientHeight,
+        120,
+        120,
+        canvas.width,
+        canvas.height
+      );
 
     const dataURL = canvas.toDataURL('image/png');
 
