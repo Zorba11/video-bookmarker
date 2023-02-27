@@ -3,6 +3,7 @@ import './bookmark.css';
 import { IBookmark } from './Ibookmarks';
 import { formatVideoTime } from '../../utils/domHelpers';
 
+
 const Bookmark: React.FC<{
   bookmark: IBookmark;
   onPlay: () => void;
@@ -37,8 +38,8 @@ const Bookmark: React.FC<{
           {isWebClient
             ? new Date(bookmark.timeDesc).toLocaleString()
             : isYoutube
-            ? 'time: ' + formatVideoTime(bookmark.time)
-            : 'time: '}
+            ? formatVideoTime(bookmark.time)
+            : 'time: 00:00:00'}
         </h3>
       </div>
 

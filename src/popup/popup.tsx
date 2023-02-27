@@ -31,9 +31,9 @@ const App: React.FC<{}> = () => {
     getCurrentTab()
       .then((tab) => {
         setActiveTab(tab);
-        isYoutubeVideoId(activeTab)
+        isYoutubeVideoId(tab)
           ? setIsYoutube(true)
-          : isWebClientVideo(activeTab)
+          : isWebClientVideo(tab)
           ? setIsWebClient(true)
           : console.log('Not a valid page');
       })

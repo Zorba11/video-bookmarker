@@ -19,10 +19,20 @@ import {
 
 export function createYTBookmarkButton(videoId: string) {
   console.log('Hello from content script');
+  let bookmarkButton: HTMLImageElement;
+  if (bookmarkButtonExist()) {
+    bookmarkButton = findElementByClassName(
+      'bookmark-button'
+    ) as HTMLImageElement;
+  }
 
-  if (bookmarkButtonExist()) return;
+  bookmarkButtonExist()
+    ? (bookmarkButton = findElementByClassName(
+        'bookmark-button'
+      ) as HTMLImageElement)
+    : (bookmarkButton = document.createElement('img'));
 
-  const bookmarkButton: HTMLImageElement = document.createElement('img');
+
   const playerControlsLeftBar: HTMLElement = findElementByClassName(
     PLAYER_LEFT_CONTROLS_CLASSNAME
   );

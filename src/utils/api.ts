@@ -5,10 +5,13 @@ export function fetchBookmarks(currentVideoId: string): Promise<any> {
     if (currentVideoId) {
       return new Promise((resolve, reject) => {
         chrome.storage.local.get([currentVideoId], (result) => {
-          console.log('result: ', result);
-          resolve(
-            result[currentVideoId] ? JSON.parse(result[currentVideoId]) : []
-          );
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError);
+          } else {
+            resolve(
+              result[currentVideoId] ? JSON.parse(result[currentVideoId]) : []
+            );
+          }
         });
       });
     } else {
@@ -16,8 +19,10 @@ export function fetchBookmarks(currentVideoId: string): Promise<any> {
     }
   } catch (error) {
     console.error(`Error fetching bookmarks: ${error}`);
+    return Promise.reject(error);
   }
 }
+
 
 export async function storeBookmark(
   newBookmark: IBookmark,

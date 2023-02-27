@@ -7,12 +7,10 @@ import { createBookmarkButton as createWCBookmarkButton } from '../utils/webClie
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'NewWebClientVideo':
-      /**
-       * timeout is a temporary solution for the race condition
-       * where the content script is loaded only after the background script
-       * has sent the message
-       * */
-      setTimeout(() => createWCBookmarkButton(message.videoId), 2000);
+      // Listen to the DOMContentLoaded event to ensure the page is fully loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        createWCBookmarkButton(message.videoId);
+      });
       break;
     case 'NewYoutubeVideo':
       createYTBookmarkButton(message.videoId);

@@ -1,9 +1,3 @@
-import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
-import { YOUTUBE_VIDEO_URL } from '../constants/urls';
-import {
-  captureAndStoreTabThumbnail,
-  captureTabThumbnail as captureThumbnailUrl,
-} from '../utils/api';
 import {
   getWebClientVideoId,
   getYoutubeVideoId,
@@ -27,44 +21,20 @@ chrome.tabs.onUpdated.addListener(
         videoId = getWebClientVideoId(tab);
 
         // send a message to the content script
-        chrome.tabs.query(
-          { active: true, currentWindow: true },
-          function (tabs) {
-            chrome.tabs.sendMessage(tabId, {
-              type: 'NewWebClientVideo',
-              videoId: videoId,
-            });
-          }
-        );
+        chrome.tabs.sendMessage(tabId, {
+          type: 'NewWebClientVideo',
+          videoId: videoId,
+        });
       } else if (videoId && isYoutubeVideoId(tab)) {
         videoId = getYoutubeVideoId(tab);
         // send a message to the content script
-        chrome.tabs.query(
-          { active: true, currentWindow: true },
-          function (tabs) {
-            chrome.tabs.sendMessage(tabId, {
-              type: 'NewYoutubeVideo',
-              videoId: videoId,
-            });
-          }
-        );
+        chrome.tabs.sendMessage(tabId, {
+          type: 'NewYoutubeVideo',
+          videoId: videoId,
+        });
       }
     } catch (error) {
       console.error(`error finding a valid video url: ${error}`);
     }
   }
 );
-
-/**
- * Listens for a message from the content script to capture a thumbnail
- * ----unused so far------
- */
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  switch (message.type) {
-    case 'CaptureThumbnail':
-      captureAndStoreTabThumbnail(message.videoId, message.currentTime);
-      break;
-    default:
-      break;
-  }
-});

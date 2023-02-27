@@ -9,7 +9,7 @@
     "48": "icon.png",
     "128": "icon.png"
   },
-  "permissions": ["storage", "tabs", "activeTab"],
+  "permissions": ["storage", "tabs", "activeTab", "unlimitedStorage"],
   "host_permissions": [
     "https://*.youtube.com/*",
     "https://10.53.105.43/web/video/*"
@@ -26,7 +26,8 @@
   "content_scripts": [
     {
       "matches": ["https://*.youtube.com/*", "https://10.53.105.43/web/*"],
-      "js": ["contentScript.js"]
+      "js": ["contentScript.js"],
+      "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
