@@ -86,3 +86,10 @@ async function addNewBookMarkHandler(videoId: string): Promise<void> {
   storeBookmark(newBookMark, currentVideoBookmarks);
   console.log(currentVideoBookmarks);
 }
+
+export function playYTBookmark(time: number): void {
+  const youtubePlayer = ytPlayer();
+  if (!youtubePlayer) return;
+
+  youtubePlayer.currentTime = time;
+}

@@ -1,4 +1,4 @@
-import { createYTBookmarkButton } from '../utils/YTHelpers';
+import { createYTBookmarkButton, playYTBookmark } from '../utils/YTHelpers';
 import { createBookmarkButton as createWCBookmarkButton } from '../utils/webClientHelpers';
 
 /**
@@ -7,13 +7,19 @@ import { createBookmarkButton as createWCBookmarkButton } from '../utils/webClie
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case 'NewWebClientVideo':
-      // Listen to the DOMContentLoaded event to ensure the page is fully loaded
-      document.addEventListener('DOMContentLoaded', () => {
-        createWCBookmarkButton(message.videoId);
-      });
+      /**
+       * Inorder to handle the race condition when the background script
+       * sends the message to create the bookmark button before the content is loaded
+       * DOMContentLoaded event is not working :( so let's use a timeout
+       */
+      setTimeout(() => createWCBookmarkButton(message.videoId), 2000);
       break;
     case 'NewYoutubeVideo':
-      createYTBookmarkButton(message.videoId);
+      setTimeout(() => createYTBookmarkButton(message.videoId), 2000);
+      break;
+    case 'PlayYTBookmark':
+      playYTBookmark(message.value);
+      break;
     default:
       break;
   }

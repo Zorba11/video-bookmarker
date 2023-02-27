@@ -27,7 +27,7 @@
     {
       "matches": ["https://*.youtube.com/*", "https://10.53.105.43/web/*"],
       "js": ["contentScript.js"],
-      "run_at": "document_end"
+      "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [

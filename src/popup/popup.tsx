@@ -3,7 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './popup.css';
 import Bookmark from '../components/bookmark';
 import { IBookmark } from '../components/bookmark/Ibookmarks';
-import { fetchBookmarks, updateBookmarks } from '../utils/api';
+import {
+  fetchBookmarks,
+  requestBookmarkPlay,
+  updateBookmarks,
+} from '../utils/api';
 import {
   getVideoId,
   checkIfValidPage,
@@ -23,6 +27,7 @@ const App: React.FC<{}> = () => {
   const [videoId, setVideoId] = React.useState<string>(undefined);
   const [isYoutube, setIsYoutube] = React.useState<boolean>(false);
   const [isWebClient, setIsWebClient] = React.useState<boolean>(false);
+  const [bookmarkTime, setBookmarkTime] = React.useState<number>(0);
 
   useEffect(() => {
     /**
@@ -79,7 +84,12 @@ const App: React.FC<{}> = () => {
     };
   }, []);
 
-  const onPlay = () => {};
+  const onPlay = (e: Event) => {
+    const target = e.target as HTMLElement;
+    const timestamp = target.getAttribute('data-timestamp');
+
+    requestBookmarkPlay(activeTab, timestamp, isYoutube, isWebClient);
+  };
 
   const onDelete = async (index: number) => {
     bookmarks.splice(index, 1);
@@ -148,7 +158,7 @@ root.render(<App />);
 function renderBookmarks(
   isValidPage: boolean,
   bookmarks: IBookmark[],
-  onPlay: () => void,
+  onPlay: (e: Event) => void,
   onDelete: (index) => void,
   onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void,
   isYoutube: boolean,

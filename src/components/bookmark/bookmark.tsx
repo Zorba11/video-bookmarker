@@ -6,7 +6,7 @@ import { formatVideoTime } from '../../utils/domHelpers';
 
 const Bookmark: React.FC<{
   bookmark: IBookmark;
-  onPlay: () => void;
+  onPlay: (e) => void;
   onDelete: () => void;
   onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   isYoutube: boolean;
@@ -48,6 +48,7 @@ const Bookmark: React.FC<{
           onClick={onPlay}
           className="action-button action-button--medium action-button--play"
           id="bookmarkPlay"
+          data-timestamp={bookmark.time}
         >
           <img src="play.png" className="icon-img" />
         </div>

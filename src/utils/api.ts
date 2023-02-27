@@ -105,3 +105,17 @@ export async function captureAndStoreTabThumbnail(
   });
   updateBookmarks(videoId, updatedBookmarks);
 }
+
+export function requestBookmarkPlay(
+  activeTab: chrome.tabs.Tab,
+  timestamp: string,
+  isYoutube: boolean,
+  isWebClient: boolean
+) {
+  if (isYoutube) {
+    chrome.tabs.sendMessage(activeTab.id, {
+      type: 'PlayYTBookmark',
+      value: timestamp,
+    });
+  }
+}
