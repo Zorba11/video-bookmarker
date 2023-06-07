@@ -108,7 +108,8 @@ export function requestBookmarkPlay(
   activeTab: chrome.tabs.Tab,
   timestamp: string,
   isYoutube: boolean,
-  isWebClient: boolean
+  isWebClient: boolean,
+  videoId?: string
 ) {
   if (isYoutube) {
     chrome.tabs.sendMessage(activeTab.id, {
@@ -121,6 +122,7 @@ export function requestBookmarkPlay(
     chrome.tabs.sendMessage(activeTab.id, {
       type: 'PlayWebClientBookmark',
       value: timestamp,
+      videoId: videoId,
     });
   }
 }

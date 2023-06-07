@@ -86,9 +86,14 @@ const App: React.FC<{}> = () => {
 
   const onPlay = (e: Event) => {
     const target = e.target as HTMLElement;
-    const timestamp = target.getAttribute('data-timestamp');
+    // const timestamp = target.getAttribute('data-timestamp');
+    const timestamp = document.getElementById(
+      'boookmartimeforbutton'
+    ).innerText;
 
-    requestBookmarkPlay(activeTab, timestamp, isYoutube, isWebClient);
+    console.log('timestamp', timestamp);
+
+    requestBookmarkPlay(activeTab, timestamp, isYoutube, isWebClient, videoId);
   };
 
   const onDelete = async (index: number) => {

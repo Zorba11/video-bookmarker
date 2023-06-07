@@ -50,6 +50,12 @@ const Bookmark: React.FC<{
           id="bookmarkPlay"
           data-timestamp={bookmark.time}
         >
+          <div
+            style={{ display: 'none', position: 'absolute' }}
+            id="boookmartimeforbutton"
+          >
+            {bookmark.time}
+          </div>
           <img src="play.png" className="icon-img" />
         </div>
         <div

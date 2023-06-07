@@ -5,6 +5,7 @@ import {
   PLAYER_OVERLAY_DATE,
   PLAYER_OVERLAY_TIME,
 } from '../constants/componentNames';
+import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
 import { fetchBookmarks, requestCaptureThumbnail, storeBookmark } from './api';
 import {
   autoAddBookMarkName,
@@ -81,4 +82,15 @@ export function createBookmarkButton(videoId: string): void {
   bookmarkButton.addEventListener('click', () =>
     addNewBookMarkHandler(videoId)
   );
+}
+
+export function playWebClientBookmark(time: number, videoId: string): void {
+  window.location.href =
+    WEB_CLIENT_STREAM_URL +
+    '/' +
+    videoId +
+    '?startTime=' +
+    time +
+    '&' +
+    'updateStartTime=true';
 }

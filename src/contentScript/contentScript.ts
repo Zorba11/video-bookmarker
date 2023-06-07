@@ -1,5 +1,8 @@
 import { createYTBookmarkButton, playYTBookmark } from '../utils/YTHelpers';
-import { createBookmarkButton as createWCBookmarkButton } from '../utils/webClientHelpers';
+import {
+  createBookmarkButton as createWCBookmarkButton,
+  playWebClientBookmark,
+} from '../utils/webClientHelpers';
 
 /**
  * Beginning of the content script
@@ -20,6 +23,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'PlayYTBookmark':
       playYTBookmark(message.value);
       break;
+    case 'PlayWebClientBookmark':
+      playWebClientBookmark(message.value, message?.videoId);
     default:
       break;
   }

@@ -142,38 +142,40 @@ export async function captureThumbnail(
   isYoutube: boolean
 ): Promise<void> {
   try {
-    let videoEl: HTMLVideoElement | HTMLCanvasElement;
+    // let videoEl: HTMLVideoElement | HTMLCanvasElement;
 
-    isWebClient
-      ? (videoEl = document.getElementById(playerId) as
-          | HTMLVideoElement
-          | HTMLCanvasElement)
-      : (videoEl = findElementByClassName(playerId) as
-          | HTMLVideoElement
-          | HTMLCanvasElement);
+    // isWebClient
+    //   ? (videoEl = document.getElementById(playerId) as
+    //       | HTMLVideoElement
+    //       | HTMLCanvasElement)
+    //   : (videoEl = findElementByClassName(playerId) as
+    //       | HTMLVideoElement
+    //       | HTMLCanvasElement);
 
-    if (!videoEl) return;
+    // if (!videoEl) return;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = 1200;
-    canvas.height = 1200;
-    canvas
-      .getContext('2d')
-      .drawImage(
-        videoEl,
-        0,
-        0,
-        videoEl.clientWidth,
-        videoEl.clientHeight,
-        120,
-        120,
-        canvas.width,
-        canvas.height
-      );
+    // const canvas = document.createElement('canvas');
+    // canvas.width = 600;
+    // canvas.height = 600;
+    // canvas
+    //   .getContext('2d')
+    //   .drawImage(
+    //     videoEl,
+    //     0,
+    //     0,
+    //     videoEl.clientWidth,
+    //     videoEl.clientHeight,
+    //     120,
+    //     120,
+    //     canvas.width,
+    //     canvas.height
+    //   );
 
-    const dataURL = canvas.toDataURL('image/png');
+    // const dataURL = canvas.toDataURL('image/png');
 
-    bookmark.thumbnail = dataURL;
+    // bookmark.thumbnail = dataURL;
+
+    bookmark.thumbnail = 'thumbnail.png';
   } catch (error) {
     console.error(`error capturing thumbnail: ${error}`);
   }

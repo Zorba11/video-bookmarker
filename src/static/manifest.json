@@ -12,7 +12,8 @@
   "permissions": ["storage", "tabs", "activeTab", "unlimitedStorage"],
   "host_permissions": [
     "https://*.youtube.com/*",
-    "https://10.53.105.43/web/video/*"
+    "https://10.53.105.43/web/video/*",
+    "https://10.53.104.227/web/video/"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -25,7 +26,11 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.youtube.com/*", "https://10.53.105.43/web/*"],
+      "matches": [
+        "https://*.youtube.com/*",
+        "https://10.53.105.43/web/*",
+        "https://10.53.104.227/web/"
+      ],
       "js": ["contentScript.js"],
       "run_at": "document_idle"
     }
