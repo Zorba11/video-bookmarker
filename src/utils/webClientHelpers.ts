@@ -6,11 +6,11 @@ import {
   PLAYER_OVERLAY_TIME,
 } from '../constants/componentNames';
 import { WEB_CLIENT_STREAM_URL } from '../constants/urls';
-import { fetchBookmarks, requestCaptureThumbnail, storeBookmark } from './api';
+import { fetchBookmarks, storeBookmark } from './api';
 import {
   autoAddBookMarkName,
   bookmarkButtonExist,
-  captureThumbnail,
+  // captureThumbnail,
   findElementByClassName,
 } from './domHelpers';
 
@@ -32,7 +32,7 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
   try {
     const currentTime = getCurrentTime();
     const newBookMark: IBookmark = {
-      videoId,
+    videoId,
       bookmarkName: 'bookmark 1',
       time: currentTime,
       timeDesc: new Date(currentTime).toString().slice(0, 24),
@@ -44,7 +44,7 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
 
     autoAddBookMarkName(currentVideoBookmarks, newBookMark);
 
-    captureThumbnail(newBookMark, WEB_CLIENT_PLAYER_ID, true, null);
+    // captureThumbnail(newBookMark, WEB_CLIENT_PLAYER_ID, true, null);
 
     storeBookmark(newBookMark, currentVideoBookmarks);
 
@@ -55,6 +55,14 @@ export async function addNewBookMarkHandler(videoId: string): Promise<void> {
 }
 
 export function getCurrentTime(): number {
+// try getting value from the address bar if available
+const urlParams = new URLSearchParams(window.location.search);
+const startTimeParam = urlParams.get('startTime');
+const startTime = startTimeParam ? parseInt(startTimeParam) : 0;
+
+if (startTime) {
+  return startTime;
+} else {
   // we are getting the current timestamp from the overlay date time values
   const playerOverlayTimeEl = findElementByClassName(PLAYER_OVERLAY_TIME);
   const playerOverlayDateEl = findElementByClassName(PLAYER_OVERLAY_DATE);
@@ -63,6 +71,7 @@ export function getCurrentTime(): number {
     playerOverlayTimeEl.textContent + ' ' + playerOverlayDateEl.textContent;
 
   return dateTime ? new Date(dateTime).getTime() : 0;
+}
 }
 
 export function createBookmarkButton(videoId: string): void {

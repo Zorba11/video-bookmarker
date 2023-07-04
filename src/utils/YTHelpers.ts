@@ -4,16 +4,10 @@ import {
   PLAYER_RIGHT_CONTROLS_CLASSNAME,
   YT_PLAYER_CLASSNAME,
 } from '../constants/componentNames';
-import {
-  captureAndStoreTabThumbnail,
-  captureTabThumbnail,
-  fetchBookmarks,
-  storeBookmark,
-} from './api';
+import { fetchBookmarks, storeBookmark } from './api';
 import {
   autoAddBookMarkName,
   bookmarkButtonExist,
-  captureThumbnail,
   findElementByClassName,
 } from './domHelpers';
 
@@ -31,7 +25,6 @@ export function createYTBookmarkButton(videoId: string) {
         'bookmark-button'
       ) as HTMLImageElement)
     : (bookmarkButton = document.createElement('img'));
-
 
   const playerControlsLeftBar: HTMLElement = findElementByClassName(
     PLAYER_LEFT_CONTROLS_CLASSNAME
@@ -72,7 +65,7 @@ async function addNewBookMarkHandler(videoId: string): Promise<void> {
     bookmarkName: 'bookmark 1',
     time: currentTime,
     timeDesc: new Date(currentTime).toString().slice(0, 24),
-    thumbnail: 'thumbnail.png',
+    // thumbnail: 'thumbnail.png',
   };
 
   // always make sure to get the latest bookmarks
@@ -83,7 +76,7 @@ async function addNewBookMarkHandler(videoId: string): Promise<void> {
   // adding a default name to the bookmark
   autoAddBookMarkName(currentVideoBookmarks, newBookMark);
 
-  captureThumbnail(newBookMark, YT_PLAYER_CLASSNAME, null, true);
+  // captureThumbnail(newBookMark, YT_PLAYER_CLASSNAME, null, true);
 
   storeBookmark(newBookMark, currentVideoBookmarks);
   console.log(currentVideoBookmarks);

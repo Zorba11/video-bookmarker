@@ -22,9 +22,9 @@ const Bookmark: React.FC<{
   return (
     <div className="bookmark">
       {/* <!-- item 1 - video thumbnail --> */}
-      <div className="thumbnail">
+      {/* <div className="thumbnail">
         <img src={bookmark.thumbnail} className="thumbnail-img" />
-      </div>
+      </div> */}
 
       {/* <!-- video name & timestamp --> */}
       <div className="description">

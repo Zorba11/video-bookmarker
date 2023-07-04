@@ -84,16 +84,9 @@ const App: React.FC<{}> = () => {
     };
   }, []);
 
-  const onPlay = (e: Event) => {
-    const target = e.target as HTMLElement;
-    // const timestamp = target.getAttribute('data-timestamp');
-    const timestamp = document.getElementById(
-      'boookmartimeforbutton'
-    ).innerText;
+  const onPlay = (time: number) => {
 
-    console.log('timestamp', timestamp);
-
-    requestBookmarkPlay(activeTab, timestamp, isYoutube, isWebClient, videoId);
+    requestBookmarkPlay(activeTab, time, isYoutube, isWebClient, videoId);
   };
 
   const onDelete = async (index: number) => {
@@ -163,7 +156,7 @@ root.render(<App />);
 function renderBookmarks(
   isValidPage: boolean,
   bookmarks: IBookmark[],
-  onPlay: (e: Event) => void,
+  onPlay: (time: number) => void,
   onDelete: (index) => void,
   onBookmarkNameChange: (e: React.KeyboardEvent<HTMLInputElement>) => void,
   isYoutube: boolean,
@@ -172,11 +165,13 @@ function renderBookmarks(
   if (bookmarks.length === 0 || !isValidPage)
     return <div className="title">No bookmarks yet</div>;
 
+    console.log("bookmarks: ",bookmarks);
+
   return bookmarks.map((bookmark, index) => (
     <Bookmark
       key={index}
       bookmark={bookmark}
-      onPlay={onPlay}
+      onPlay={() => onPlay(bookmark.time)}
       onDelete={() => onDelete(index)}
       onBookmarkNameChange={onBookmarkNameChange}
       isYoutube={isYoutube}

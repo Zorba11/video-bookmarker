@@ -106,7 +106,7 @@ export async function captureAndStoreTabThumbnail(
 
 export function requestBookmarkPlay(
   activeTab: chrome.tabs.Tab,
-  timestamp: string,
+  timestamp: number,
   isYoutube: boolean,
   isWebClient: boolean,
   videoId?: string
